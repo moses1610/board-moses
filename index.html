@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/api/board/moses/file/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VVIP Sales Dashboard</title>
+<style>
+:root {
+  --bg: #f3f4f6;
+  --card-bg: #ffffff;
+  --text: #1f2937;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --red-border: #fecaca;
+  --amber: #d97706;
+  --amber-light: #fffbeb;
+  --green: #059669;
+  --green-light: #f0fdf4;
+  --green-border: #bbf7d0;
+  --blue: #2563eb;
+  --blue-light: #eff6ff;
+  --blue-border: #bfdbfe;
+  --purple: #7c3aed;
+  --purple-light: #f5f3ff;
+  --purple-border: #ddd6fe;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  padding: 20px;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.header-left h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+.header-left .subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.header-actions { display: flex; gap: 8px; align-items: center; }
+
+.btn {
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn:hover { background: var(--bg); border-color: #d1d5db; }
+
+/* ── Tabs ── */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0;
+}
+.tab-btn {
+  padding: 8px 18px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.15s;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+  font-weight: 600;
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── Stats Grid ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--border);
+}
+.stat-card.karl { border-left-color: var(--blue); }
+.stat-card.mura { border-left-color: var(--green); }
+.stat-card.vs { border-left-color: var(--purple); }
+.stat-card.total { border-left-color: var(--amber); }
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+}
+.stat-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── Data Table ── */
+.table-wrap {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.data-table th {
+  text-align: left;
+  padding: 10px 14px;
+  background: #f9fafb;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.data-table th.right, .data-table td.right { text-align: right; }
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+.data-table tbody tr:hover { background: #f9fafb; }
+.data-table tbody tr.expand-row { background: none; }
+.data-table tbody tr.expand-row:hover { background: none; }
+
+.product-name {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.shop-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.shop-badge.karl { background: var(--blue-light); color: var(--blue); }
+.shop-badge.mura { background: var(--green-light); color: var(--green); }
+.shop-badge.vs { background: var(--purple-light); color: var(--purple); }
+
+.change-up { color: var(--green); font-weight: 600; }
+.change-down { color: var(--red); font-weight: 600; }
+.change-new {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 12px;
+}
+
+/* ── Expand Button & Variation Rows ── */
+.expand-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+.expand-btn:hover { background: var(--bg); color: var(--text); }
+.expand-btn.open { background: var(--blue-light); color: var(--blue); border-color: var(--blue-border); }
+
+.var-container {
+  display: none;
+  padding: 0;
+}
+.var-container.open { display: table-row; }
+.var-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  background: #fafbfc;
+}
+.var-table td {
+  padding: 6px 14px;
+  border-bottom: 1px solid #f0f1f3;
+  color: var(--text-muted);
+}
+.var-table td:first-child { padding-left: 50px; }
+.var-table tr:last-child td { border-bottom: none; }
+.var-sku {
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── Loading & Error ── */
+.loading-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.loading-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+.error-box {
+  background: var(--red-light);
+  border: 1px solid var(--red-border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  color: var(--red);
+  font-size: 14px;
+}
+.error-box .btn { margin-top: 10px; color: var(--red); border-color: var(--red-border); }
+
+.var-loading {
+  padding: 12px 14px 12px 50px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  body { padding: 12px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .product-name { max-width: 180px; }
+  .data-table { font-size: 12px; }
+  .data-table th, .data-table td { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>VVIP Sales Dashboard</h1>
+    <div class="subtitle" id="last-updated">Loading...</div>
+  </div>
+  <div class="header-actions">
+    <button class="btn" onclick="loadData()">&#8635; Refresh</button>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="all" onclick="switchTab('all')">All Shops</button>
+  <button class="tab-btn" data-tab="karl" onclick="switchTab('karl')">Karlmobel</button>
+  <button class="tab-btn" data-tab="mura" onclick="switchTab('mura')">Murahya</button>
+  <button class="tab-btn" data-tab="vs" onclick="switchTab('vs')">ValueSnap</button>
+</div>
+
+<div id="content">
+  <div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loading-text">Fetching 7-day sales data...</div>
+    <div class="loading-sub">This may take 10-30 seconds</div>
+  </div>
+</div>
+
+<!-- Tab containers (hidden until data loads) -->
+<div id="tabs-container" style="display:none;">
+  <div id="tab-all" class="tab-content active"></div>
+  <div id="tab-karl" class="tab-content"></div>
+  <div id="tab-mura" class="tab-content"></div>
+  <div id="tab-vs" class="tab-content"></div>
+</div>
+
+<script>
+// =================================================================
+// CONFIG — Replace with your deployed Apps Script URL
+// =================================================================
+var PROXY_URL = "https://script.google.com/macros/s/AKfycbw1_QGOKEPnOxMVzv1B9luEGuoMYFfEvE_moZ0Q4lMP9YIDYsU5I-ldoPGyz07erDxz/exec";
+
+// =================================================================
+// STATE
+// =================================================================
+var currentTab = 'all';
+var shopData = { karl: [], mura: [], vs: [] };
+var shopTotals = { karl: {sp:0,prev:0}, mura: {sp:0,prev:0}, vs: {sp:0,prev:0} };
+var variationCache = {};
+
+// =================================================================
+// ENTRY POINT
+// =================================================================
+loadData();
+
+// =================================================================
+// DATA LOADING
+// =================================================================
+function loadData() {
+  document.getElementById('content').style.display = 'block';
+  document.getElementById('tabs-container').style.display = 'none';
+  document.getElementById('loading').style.display = 'flex';
+  document.getElementById('loading-text').textContent = 'Fetching 7-day sales data...';
+
+  var d7 = null, d14 = null;
+
+  Promise.all([
+    fetch(PROXY_URL + '?window=7').then(function(r) { return r.json(); }).then(function(d) {
+      d7 = d;
+      document.getElementById('loading-text').textContent = 'Fetching 14-day data for comparison...';
+    }),
+    fetch(PROXY_URL + '?window=14').then(function(r) { return r.json(); })
+      .then(function(d) { d14 = d; })
+  ]).then(function() {
+    processData(d7, d14);
+  }).catch(function(err) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').innerHTML =
+      '<div class="error-box">Failed to load data: ' + esc(err.message) +
+      '<br><button class="btn" onclick="loadData()">Retry</button></div>';
+  });
+}
+
+function processData(d7, d14) {
+  var shops = ['Karlmobel', 'Murahya', 'ValueSnap'];
+  var keys = ['karl', 'mura', 'vs'];
+
+  // Extract 7-day data per shop
+  var data7 = {};
+  shops.forEach(function(s, i) {
+    data7[keys[i]] = extractProducts(d7, s);
+  });
+
+  // Extract 14-day data per shop
+  var data14 = {};
+  shops.forEach(function(s, i) {
+    data14[keys[i]] = extractProducts(d14, s);
+  });
+
+  // Merge: calculate previous week = 14d - 7d
+  keys.forEach(function(k) {
+    var merged = [];
+    var d14Map = {};
+    data14[k].forEach(function(p) { d14Map[p.id] = p; });
+
+    data7[k].forEach(function(p) {
+      var p14 = d14Map[p.id] || { sp: 0 };
+      merged.push({
+        id: p.id,
+        name: p.name,
+        sp: p.sp,
+        units: p.units,
+        prev: Math.round((p14.sp - p.sp) * 100) / 100
+      });
+    });
+
+    merged.sort(function(a, b) { return b.sp - a.sp; });
+    shopData[k] = merged.slice(0, 10);
+
+    // Totals
+    var totalSp = 0, totalPrev = 0;
+    merged.slice(0, 10).forEach(function(p) {
+      totalSp += p.sp;
+      totalPrev += p.prev;
+    });
+    shopTotals[k] = {
+      sp: Math.round(totalSp),
+      prev: Math.round(totalPrev)
+    };
+  });
+
+  // Render
+  document.getElementById('content').style.display = 'none';
+  document.getElementById('tabs-container').style.display = 'block';
+  document.getElementById('last-updated').textContent =
+    'Last updated: ' + new Date().toLocaleString('en-MY', { dateStyle: 'medium', timeStyle: 'short' });
+
+  renderAll();
+  renderShop('karl', 'Karlmobel');
+  renderShop('mura', 'Murahya');
+  renderShop('vs', 'ValueSnap');
+  switchTab(currentTab);
+}
+
+function extractProducts(apiData, shopName) {
+  var seen = {};
+  var items = (apiData && apiData.data) || [];
+  items.forEach(function(i) {
+    if (!i.ourShop || i.ourShop.name !== shopName) return;
+    var id = i.parentSortValues && i.parentSortValues.productId;
+    if (id && !seen[id]) {
+      seen[id] = {
+        id: id,
+        name: (i.ourProduct && i.ourProduct.name) || 'Unknown',
+        sp: Math.round(((i.groupMetrics && i.groupMetrics.spSalesValueTotal) || 0) * 100) / 100,
+        units: (i.groupMetrics && i.groupMetrics.spSalesTotal) || 0
+      };
+    }
+  });
+  return Object.values(seen);
+}
+
+// =================================================================
+// TAB SWITCHING
+// =================================================================
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-tab') === tab);
+  });
+  document.querySelectorAll('.tab-content').forEach(function(c) {
+    c.classList.remove('active');
+  });
+  var el = document.getElementById('tab-' + tab);
+  if (el) el.classList.add('active');
+}
+
+// =================================================================
+// RENDERING — All Shops tab
+// =================================================================
+function renderAll() {
+  var grandTotal = shopTotals.karl.sp + shopTotals.mura.sp + shopTotals.vs.sp;
+  var grandPrev = shopTotals.karl.prev + shopTotals.mura.prev + shopTotals.vs.prev;
+
+  var html = '<div class="stats-grid">';
+  html += statCard('Karlmobel', shopTotals.karl.sp, shopTotals.karl.prev, 'karl');
+  html += statCard('Murahya', shopTotals.mura.sp, shopTotals.mura.prev, 'mura');
+  html += statCard('ValueSnap', shopTotals.vs.sp, shopTotals.vs.prev, 'vs');
+  html += statCard('Combined Total', grandTotal, grandPrev, 'total');
+  html += '</div>';
+
+  // Combined table — all shops interleaved by sales
+  var combined = [];
+  ['karl', 'mura', 'vs'].forEach(function(k) {
+    shopData[k].forEach(function(p) {
+      combined.push(Object.assign({}, p, { shop: k }));
+    });
+  });
+  combined.sort(function(a, b) { return b.sp - a.sp; });
+
+  html += '<div class="table-wrap">';
+  html += '<table class="data-table">';
+  html += '<thead><tr>';
+  html += '<th>#</th><th>Shop</th><th>Product</th>';
+  html += '<th class="right">This 7d</th><th class="right">Prev 7d</th>';
+  html += '<th class="right">Change</th><th class="right">Units</th><th></th>';
+  html += '</tr></thead><tbody>';
+
+  combined.forEach(function(p, i) {
+    var shopLabel = p.shop === 'karl' ? 'Karlmobel' : p.shop === 'mura' ? 'Murahya' : 'ValueSnap';
+    html += productRow(i + 1, p, p.shop, shopLabel);
+  });
+
+  html += '</tbody></table></div>';
+  document.getElementById('tab-all').innerHTML = html;
+}
+
+// =================================================================
+// RENDERING — Individual shop tab
+// =================================================================
+function renderShop(key, name) {
+  var t = shopTotals[key];
+  var html = '<div class="stats-grid">';
+  html += statCard('This Week (7d)', t.sp, null, key);
+
+  var prevTotal = t.prev;
+  var changeHtml = '';
+  if (prevTotal !== 0) {
+    var pct = ((t.sp - prevTotal) / prevTotal * 100).toFixed(0);
+    changeHtml = '<span class="' + (pct >= 0 ? 'change-up' : 'change-down') + '">' +
+      (pct >= 0 ? '+' : '') + pct + '%</span> vs prev week';
+  }
+  html += '<div class="stat-card ' + key + '">' +
+    '<div class="stat-label">Previous Week (7d)</div>' +
+    '<div class="stat-value">' + fmtRM(prevTotal) + '</div>' +
+    (changeHtml ? '<div class="stat-sub">' + changeHtml + '</div>' : '') +
+    '</div>';
+  html += '</div>';
+
+  html += '<div class="table-wrap"><table class="data-table">';
+  html += '<thead><tr>';
+  html += '<th>#</th><th>Product</th>';
+  html += '<th class="right">This 7d</th><th class="right">Prev 7d</th>';
+  html += '<th class="right">Change</th><th class="right">Units</th><th></th>';
+  html += '</tr></thead><tbody>';
+
+  shopData[key].forEach(function(p, i) {
+    html += productRow(i + 1, p, key, null);
+  });
+
+  html += '</tbody></table></div>';
+  document.getElementById('tab-' + key).innerHTML = html;
+}
+
+// =================================================================
+// RENDERING HELPERS
+// =================================================================
+function statCard(label, value, prevValue, cssClass) {
+  var sub = '';
+  if (prevValue !== null && prevValue !== undefined) {
+    var change = value - prevValue;
+    var pct = prevValue !== 0 ? ((change / prevValue) * 100).toFixed(0) : 'N/A';
+    if (pct !== 'N/A') {
+      sub = '<div class="stat-sub">prev 7d: ' + fmtRM(prevValue) +
+        ' &middot; <span class="' + (pct >= 0 ? 'change-up' : 'change-down') + '">' +
+        (pct >= 0 ? '+' : '') + pct + '%</span></div>';
+    }
+  }
+  return '<div class="stat-card ' + cssClass + '">' +
+    '<div class="stat-label">' + esc(label) + '</div>' +
+    '<div class="stat-value">' + fmtRM(value) + '</div>' +
+    sub + '</div>';
+}
+
+function productRow(num, p, shopKey, shopLabel) {
+  var rowId = 'row-' + p.id;
+  var varId = 'var-' + p.id;
+  var change = fmtChange(p.sp, p.prev);
+
+  var html = '<tr id="' + rowId + '">';
+  html += '<td>' + num + '</td>';
+  if (shopLabel) {
+    html += '<td><span class="shop-badge ' + shopKey + '">' + esc(shopLabel) + '</span></td>';
+  }
+  html += '<td><div class="product-name" title="' + esc(p.name) + '">' + esc(truncate(p.name, 45)) + '</div></td>';
+  html += '<td class="right"><strong>' + fmtRM(p.sp) + '</strong></td>';
+  html += '<td class="right">' + fmtRM(p.prev) + '</td>';
+  html += '<td class="right">' + change + '</td>';
+  html += '<td class="right">' + p.units + '</td>';
+  html += '<td><button class="expand-btn" onclick="toggleVariation(\'' + p.id + '\', this)">&#9660;</button></td>';
+  html += '</tr>';
+  html += '<tr class="expand-row" id="' + varId + '" style="display:none;"><td colspan="' + (shopLabel ? 8 : 7) + '">';
+  html += '<div class="var-loading">Click expand to load variation data</div>';
+  html += '</td></tr>';
+  return html;
+}
+
+// =================================================================
+// VARIATION EXPANSION
+// =================================================================
+function toggleVariation(productId, btn) {
+  var varRow = document.getElementById('var-' + productId);
+  var isOpen = varRow.style.display !== 'none';
+
+  if (isOpen) {
+    varRow.style.display = 'none';
+    btn.classList.remove('open');
+    btn.innerHTML = '&#9660;';
+    return;
+  }
+
+  varRow.style.display = 'table-row';
+  btn.classList.add('open');
+  btn.innerHTML = '&#9650;';
+
+  // If already cached, render immediately
+  if (variationCache[productId]) {
+    renderVariations(productId, variationCache[productId]);
+    return;
+  }
+
+  // Show loading
+  var cell = varRow.querySelector('td');
+  cell.innerHTML = '<div class="var-loading"><div class="spinner" style="width:18px;height:18px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:8px;"></div>Loading variations...</div>';
+
+  // Fetch variation data
+  fetch(PROXY_URL + '?search=' + productId + '&window=7')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var vars = [];
+      (data.data || []).forEach(function(item) {
+        var pid = item.parentSortValues && item.parentSortValues.productId;
+        if (String(pid) !== String(productId)) return;
+        vars.push({
+          sku: item.sku || '',
+          variation: (item.ourProduct && item.ourProduct.variation) || 'Default',
+          sp: Math.round(((item.groupMetrics && item.groupMetrics.spSalesValueTotal) || (item.metrics && item.metrics.shopeeSalesValue) || 0) * 100) / 100,
+          units: (item.groupMetrics && item.groupMetrics.spSalesTotal) || (item.metrics && item.metrics.shopeeSales) || 0
+        });
+      });
+      vars.sort(function(a, b) { return b.sp - a.sp; });
+      variationCache[productId] = vars;
+      renderVariations(productId, vars);
+    })
+    .catch(function(err) {
+      cell.innerHTML = '<div class="var-loading" style="color:var(--red);">Failed to load variations: ' + esc(err.message) + '</div>';
+    });
+}
+
+function renderVariations(productId, vars) {
+  var varRow = document.getElementById('var-' + productId);
+  var cell = varRow.querySelector('td');
+
+  if (!vars.length) {
+    cell.innerHTML = '<div class="var-loading">No variation data found</div>';
+    return;
+  }
+
+  var html = '<table class="var-table">';
+  vars.forEach(function(v) {
+    html += '<tr>';
+    html += '<td><span class="var-sku">' + esc(v.sku) + '</span></td>';
+    html += '<td>' + esc(v.variation) + '</td>';
+    html += '<td style="text-align:right;">' + fmtRM(v.sp) + '</td>';
+    html += '<td style="text-align:right;">' + v.units + ' units</td>';
+    html += '</tr>';
+  });
+  html += '</table>';
+  cell.innerHTML = html;
+}
+
+// =================================================================
+// UTILITIES
+// =================================================================
+function fmtRM(v) {
+  if (v === null || v === undefined) return '-';
+  return 'RM ' + Math.round(v).toLocaleString('en-MY');
+}
+
+function fmtChange(current, prev) {
+  if (prev === 0 || prev === null || prev === undefined) {
+    return '<span class="change-new">New</span>';
+  }
+  var pct = ((current - prev) / prev * 100).toFixed(0);
+  var cls = pct >= 0 ? 'change-up' : 'change-down';
+  return '<span class="' + cls + '">' + (pct >= 0 ? '+' : '') + pct + '%</span>';
+}
+
+function truncate(s, len) {
+  if (!s) return '';
+  return s.length > len ? s.substring(0, len) + '...' : s;
+}
+
+function esc(s) {
+  if (!s) return '';
+  var d = document.createElement('div');
+  d.appendChild(document.createTextNode(s));
+  return d.innerHTML;
+}
+</script>
+
+</body>
+</html>
