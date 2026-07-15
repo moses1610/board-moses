@@ -4,7 +4,7 @@
 <base href="/api/board/moses/file/">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VVIP Sales Dashboard</title>
+<title>Moses Board</title>
 <style>
 :root {
   --bg: #f3f4f6;
@@ -81,6 +81,7 @@ body {
   margin-bottom: 20px;
   border-bottom: 2px solid var(--border);
   padding-bottom: 0;
+  overflow-x: auto;
 }
 .tab-btn {
   padding: 8px 18px;
@@ -286,6 +287,109 @@ body {
   font-style: italic;
 }
 
+/* ── Competitor Analysis ── */
+.analysis-intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.analysis-intro h2 { font-size: 18px; margin-bottom: 3px; }
+.analysis-intro p { color: var(--text-muted); font-size: 13px; }
+.analysis-list { display: grid; gap: 16px; }
+.analysis-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.analysis-card-head {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+}
+.analysis-title { font-size: 16px; font-weight: 700; }
+.analysis-title a { color: var(--text); text-decoration: none; }
+.analysis-title a:hover { color: var(--blue); text-decoration: underline; }
+.analysis-summary { margin-top: 5px; font-size: 13px; color: var(--text-muted); }
+.analysis-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 14px;
+  margin-top: 9px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.status-badge, .meta-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.status-badge.complete { color: var(--green); background: var(--green-light); border: 1px solid var(--green-border); }
+.status-badge.partial { color: var(--amber); background: var(--amber-light); border: 1px solid #fde68a; }
+.status-badge.blocked { color: var(--red); background: var(--red-light); border: 1px solid var(--red-border); }
+.meta-chip { color: var(--text-muted); background: #f9fafb; border: 1px solid var(--border); font-weight: 600; }
+.evidence-chip { color: var(--green); background: var(--green-light); border-color: var(--green-border); }
+.analysis-body { padding: 0 18px 18px; }
+.analysis-section { margin-top: 18px; }
+.analysis-section h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .45px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.compact-table { border: 1px solid var(--border); border-radius: 8px; overflow-x: auto; }
+.compact-table table { min-width: 760px; }
+.product-link { color: var(--blue); text-decoration: none; font-weight: 600; }
+.product-link:hover { text-decoration: underline; }
+.sales-range { font-weight: 700; color: var(--green); }
+.finding-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.finding-box { padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; background: #fafafa; }
+.finding-box strong { display: block; font-size: 13px; margin-bottom: 5px; }
+.finding-item { font-size: 13px; margin-top: 8px; }
+.finding-evidence { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+.recommendation-list { display: grid; gap: 8px; }
+.recommendation-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12px;
+}
+.recommendation-priority {
+  width: 24px; height: 24px; border-radius: 50%; background: var(--blue-light);
+  color: var(--blue); display: grid; place-items: center; font-weight: 700;
+}
+.recommendation-item strong { font-size: 13px; display: block; margin-bottom: 2px; }
+.recommendation-label { color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .35px; }
+.variation-details { margin-top: 8px; }
+.variation-details summary { cursor: pointer; color: var(--blue); font-size: 12px; font-weight: 600; }
+.variation-details .compact-table { margin-top: 8px; }
+.notice-box { padding: 12px 14px; border-radius: 8px; font-size: 13px; }
+.notice-box.no-match { background: var(--blue-light); border: 1px solid var(--blue-border); color: #1d4ed8; }
+.notice-box.blocker { background: var(--red-light); border: 1px solid var(--red-border); color: var(--red); }
+.empty-state {
+  padding: 56px 20px;
+  text-align: center;
+  background: var(--card-bg);
+  border: 1px dashed #cbd5e1;
+  border-radius: var(--radius);
+}
+.empty-state h3 { font-size: 16px; margin-bottom: 6px; }
+.empty-state p { color: var(--text-muted); font-size: 13px; }
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   body { padding: 12px; }
@@ -293,6 +397,10 @@ body {
   .product-name { max-width: 180px; }
   .data-table { font-size: 12px; }
   .data-table th, .data-table td { padding: 8px 10px; }
+  .analysis-card-head { flex-direction: column; }
+  .finding-grid { grid-template-columns: 1fr; }
+  .recommendation-item { grid-template-columns: 28px 1fr; }
+  .recommendation-item > div:nth-child(n+3) { grid-column: 2; }
 }
 </style>
 </head>
@@ -300,11 +408,11 @@ body {
 
 <div class="header">
   <div class="header-left">
-    <h1>VVIP Sales Dashboard</h1>
+    <h1>Moses Board</h1>
     <div class="subtitle" id="last-updated">Loading...</div>
   </div>
   <div class="header-actions">
-    <button class="btn" onclick="loadData()">&#8635; Refresh</button>
+    <button class="btn" onclick="refreshCurrentTab()">&#8635; Refresh</button>
   </div>
 </div>
 
@@ -313,6 +421,7 @@ body {
   <button class="tab-btn" data-tab="karl" onclick="switchTab('karl')">Karlmobel</button>
   <button class="tab-btn" data-tab="mura" onclick="switchTab('mura')">Murahya</button>
   <button class="tab-btn" data-tab="vs" onclick="switchTab('vs')">ValueSnap</button>
+  <button class="tab-btn" data-tab="competitor" onclick="switchTab('competitor')">Competitor Analysis</button>
 </div>
 
 <div id="content">
@@ -329,6 +438,7 @@ body {
   <div id="tab-karl" class="tab-content"></div>
   <div id="tab-mura" class="tab-content"></div>
   <div id="tab-vs" class="tab-content"></div>
+  <div id="tab-competitor" class="tab-content"></div>
 </div>
 
 <script>
@@ -344,11 +454,15 @@ var currentTab = 'all';
 var shopData = { karl: [], mura: [], vs: [] };
 var shopTotals = { karl: {sp:0,prev:0}, mura: {sp:0,prev:0}, vs: {sp:0,prev:0} };
 var variationCache = {};
+var competitorData = { schemaVersion: 1, updatedAt: null, runs: [] };
+var competitorLoaded = false;
+var salesUpdatedAt = null;
 
 // =================================================================
 // ENTRY POINT
 // =================================================================
 loadData();
+loadCompetitorData();
 
 // =================================================================
 // DATA LOADING
@@ -375,6 +489,10 @@ function loadData() {
     document.getElementById('content').innerHTML =
       '<div class="error-box">Failed to load data: ' + esc(err.message) +
       '<br><button class="btn" onclick="loadData()">Retry</button></div>';
+    document.getElementById('tabs-container').style.display = 'block';
+    document.getElementById('tab-all').innerHTML = document.getElementById('content').innerHTML;
+    document.getElementById('content').style.display = 'none';
+    switchTab(currentTab);
   });
 }
 
@@ -429,8 +547,8 @@ function processData(d7, d14) {
   // Render
   document.getElementById('content').style.display = 'none';
   document.getElementById('tabs-container').style.display = 'block';
-  document.getElementById('last-updated').textContent =
-    'Last updated: ' + new Date().toLocaleString('en-MY', { dateStyle: 'medium', timeStyle: 'short' });
+  salesUpdatedAt = new Date();
+  updateHeaderTime();
 
   renderAll();
   renderShop('karl', 'Karlmobel');
@@ -470,6 +588,22 @@ function switchTab(tab) {
   });
   var el = document.getElementById('tab-' + tab);
   if (el) el.classList.add('active');
+  if (tab === 'competitor' && !competitorLoaded) loadCompetitorData();
+  updateHeaderTime();
+}
+
+function refreshCurrentTab() {
+  if (currentTab === 'competitor') loadCompetitorData();
+  else loadData();
+}
+
+function updateHeaderTime() {
+  var label = document.getElementById('last-updated');
+  if (currentTab === 'competitor') {
+    label.textContent = competitorData.updatedAt ? 'Competitor results updated: ' + fmtDate(competitorData.updatedAt) : 'Competitor Analysis history';
+  } else {
+    label.textContent = salesUpdatedAt ? 'Sales refreshed: ' + salesUpdatedAt.toLocaleString('en-MY', { dateStyle: 'medium', timeStyle: 'short' }) : 'Loading sales data...';
+  }
 }
 
 // =================================================================
@@ -667,8 +801,223 @@ function renderVariations(productId, vars) {
 }
 
 // =================================================================
+// COMPETITOR ANALYSIS HISTORY
+// =================================================================
+function loadCompetitorData() {
+  var target = document.getElementById('tab-competitor');
+  target.innerHTML = '<div class="loading-overlay"><div class="spinner"></div><div class="loading-text">Loading stored competitor analyses...</div></div>';
+  fetch('competitor-analysis-data.json?ts=' + Date.now())
+    .then(function(r) {
+      if (!r.ok) throw new Error('Board history returned ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      if (!data || data.schemaVersion !== 1 || !Array.isArray(data.runs)) {
+        throw new Error('Unsupported competitor-analysis data format');
+      }
+      competitorData = data;
+      competitorLoaded = true;
+      renderCompetitorAnalysis();
+      updateHeaderTime();
+    })
+    .catch(function(err) {
+      competitorLoaded = false;
+      target.innerHTML = '<div class="error-box">Failed to load stored analyses: ' + esc(err.message) +
+        '<br><button class="btn" onclick="loadCompetitorData()">Retry</button></div>';
+    });
+}
+
+function renderCompetitorAnalysis() {
+  var runs = competitorData.runs || [];
+  var complete = runs.filter(function(run) { return run.status === 'complete'; }).length;
+  var selected = runs.reduce(function(total, run) {
+    return total + ((run.selectedCompetitors && run.selectedCompetitors.length) || 0);
+  }, 0);
+  var uniqueProducts = {};
+  runs.forEach(function(run) {
+    var product = run.ourProduct || {};
+    if (product.itemId) uniqueProducts[product.itemId] = true;
+  });
+
+  var html = '<div class="analysis-intro"><div><h2>Competitor Analysis</h2>' +
+    '<p>Verified Shopee competitor research, price comparisons and recommendations stored by run.</p></div>' +
+    '<span class="meta-chip evidence-chip">&#10003; Evidence-gated</span></div>';
+  html += '<div class="stats-grid">';
+  html += analysisStatCard('Stored Runs', runs.length, 'Complete history', 'total');
+  html += analysisStatCard('Products', Object.keys(uniqueProducts).length, 'Unique own listings', 'karl');
+  html += analysisStatCard('Complete', complete, 'Validator passed', 'mura');
+  html += analysisStatCard('Ranked Matches', selected, 'Exact-match competitors', 'vs');
+  html += '</div>';
+
+  if (!runs.length) {
+    html += '<div class="empty-state"><h3>No competitor analyses stored yet</h3>' +
+      '<p>The next validated Competitor Analysis V2 run will appear here automatically.</p></div>';
+  } else {
+    html += '<div class="analysis-list">';
+    runs.forEach(function(run) { html += renderAnalysisRun(run); });
+    html += '</div>';
+  }
+  document.getElementById('tab-competitor').innerHTML = html;
+}
+
+function analysisStatCard(label, value, sub, cssClass) {
+  return '<div class="stat-card ' + cssClass + '"><div class="stat-label">' + esc(label) + '</div>' +
+    '<div class="stat-value">' + esc(String(value)) + '</div><div class="stat-sub">' + esc(sub) + '</div></div>';
+}
+
+function renderAnalysisRun(run) {
+  var product = run.ourProduct || {};
+  var coverage = run.coverage || {};
+  var status = ['complete', 'partial', 'blocked'].indexOf(run.status) >= 0 ? run.status : 'blocked';
+  var keywords = (run.keywords || []).map(function(item) {
+    return (item.language ? item.language.toUpperCase() + ': ' : '') + (item.keyword || '');
+  }).join(' · ');
+  var html = '<article class="analysis-card"><div class="analysis-card-head"><div>';
+  html += '<div class="analysis-title"><a href="' + esc(product.url || '#') + '" target="_blank" rel="noopener">' +
+    esc(product.title || 'Untitled product') + '</a></div>';
+  html += '<div class="analysis-summary">' + esc(run.summary || '') + '</div>';
+  html += '<div class="analysis-meta"><span>' + esc(fmtDate(run.recordedAt)) + '</span>' +
+    '<span>Item ' + esc(product.itemId || '-') + '</span>' +
+    '<span>Our range ' + esc(fmtPriceRange(product.priceRange)) + '</span>' +
+    '<span>' + esc(keywords || 'Keywords unavailable') + '</span></div></div>';
+  html += '<div><span class="status-badge ' + status + '">' + esc(status.toUpperCase()) + '</span></div></div>';
+  html += '<div class="analysis-body"><div class="analysis-section"><h3>Search coverage</h3>' +
+    '<div class="analysis-meta"><span class="meta-chip">' + esc(String(coverage.passes || 0)) + ' passes</span>' +
+    '<span class="meta-chip">' + esc(String(coverage.resultsReviewed || 0)) + ' results reviewed</span>' +
+    '<span class="meta-chip">' + esc(String(coverage.candidatesReviewed || 0)) + ' candidates</span>' +
+    '<span class="meta-chip">' + esc(String(coverage.accepted || 0)) + ' accepted</span>' +
+    '<span class="meta-chip">' + esc(String(coverage.rejected || 0)) + ' rejected</span>' +
+    '<span class="meta-chip evidence-chip">&#10003; Evidence verified</span></div></div>';
+
+  if (run.selectedCompetitors && run.selectedCompetitors.length) {
+    var competitorHeading = status === 'complete' ? 'Ranked exact-match competitors' : 'Validated candidates — partial pool';
+    html += '<div class="analysis-section"><h3>' + competitorHeading + '</h3><div class="compact-table">' +
+      '<table class="data-table"><thead><tr><th>#</th><th>Competitor</th><th>Shop</th><th class="right">Displayed</th>' +
+      '<th class="right">Validated monthly</th><th>Method</th><th class="right">Price range</th><th class="right">Variations</th></tr></thead><tbody>';
+    run.selectedCompetitors.forEach(function(competitor) {
+      html += renderCompetitorRow(competitor);
+    });
+    html += '</tbody></table></div></div>';
+  } else if (run.noExactMatchFinding) {
+    html += '<div class="analysis-section"><div class="notice-box no-match"><strong>No exact match found.</strong> ' +
+      esc(run.noExactMatchFinding) + '</div></div>';
+  }
+
+  html += renderFindings(run.strengths || [], run.gaps || []);
+  html += renderRecommendations(run.recommendations || []);
+  if (run.blockers && run.blockers.length) {
+    html += '<div class="analysis-section"><div class="notice-box blocker"><strong>Blocked:</strong> ' +
+      esc(run.blockers.join(' · ')) + '</div></div>';
+  }
+  html += '</div></article>';
+  return html;
+}
+
+function renderCompetitorRow(competitor) {
+  var sales = competitor.monthlySales || {};
+  var html = '<tr><td>' + esc(String(competitor.rank || '-')) + '</td>' +
+    '<td><a class="product-link" href="' + esc(competitor.url || '#') + '" target="_blank" rel="noopener">' +
+    esc(truncate(competitor.title || 'Untitled competitor', 42)) + '</a></td>' +
+    '<td>' + esc(competitor.shop || '-') + '</td>' +
+    '<td class="right">' + esc(formatValue(sales.displayed)) + '</td>' +
+    '<td class="right sales-range">' + esc(fmtSalesRange(sales.validated)) + '</td>' +
+    '<td>' + esc(methodLabel(sales.method)) + '</td>' +
+    '<td class="right">' + esc(fmtPriceRange(competitor.priceRange)) + '</td>' +
+    '<td class="right">' + esc(String(competitor.variationCount || 0)) + '</td></tr>';
+  html += '<tr><td colspan="8">' + renderVariationDetails(competitor.variationComparison || []) + '</td></tr>';
+  return html;
+}
+
+function renderVariationDetails(rows) {
+  if (!rows.length) return '<span class="change-new">No variation comparison stored</span>';
+  var html = '<details class="variation-details"><summary>View variation comparison (' + rows.length + ')</summary>' +
+    '<div class="compact-table"><table class="data-table"><thead><tr><th>Our variation</th><th class="right">Our price</th>' +
+    '<th>Competitor variation</th><th class="right">Competitor price</th><th class="right">Difference</th><th>Status</th><th>Notes</th></tr></thead><tbody>';
+  rows.forEach(function(row) {
+    var ourAmount = priceAmount(row.ourPrice);
+    var competitorAmount = priceAmount(row.competitorPrice);
+    var difference = ourAmount !== null && competitorAmount !== null ? competitorAmount - ourAmount : null;
+    html += '<tr><td>' + esc(row.ourVariation || '-') + '</td><td class="right">' + esc(fmtRMExact(ourAmount)) + '</td>' +
+      '<td>' + esc(row.competitorVariation || 'No direct match') + '</td><td class="right">' + esc(fmtRMExact(competitorAmount)) + '</td>' +
+      '<td class="right">' + esc(difference === null ? '-' : (difference >= 0 ? '+' : '') + 'RM ' + difference.toFixed(2)) + '</td>' +
+      '<td>' + esc(row.status || '-') + '</td><td>' + esc(row.notes || '-') + '</td></tr>';
+  });
+  html += '</tbody></table></div></details>';
+  return html;
+}
+
+function renderFindings(strengths, gaps) {
+  if (!strengths.length && !gaps.length) return '';
+  return '<div class="analysis-section"><h3>Evidence-backed findings</h3><div class="finding-grid">' +
+    findingBox('Competitor strengths', strengths) + findingBox('Gaps and opportunities', gaps) + '</div></div>';
+}
+
+function findingBox(title, items) {
+  var html = '<div class="finding-box"><strong>' + esc(title) + '</strong>';
+  if (!items.length) return html + '<div class="finding-evidence">Nothing proven in this run.</div></div>';
+  items.forEach(function(item) {
+    html += '<div class="finding-item">' + esc(item.finding || '') +
+      '<div class="finding-evidence">' + esc(item.evidence || '') + '</div></div>';
+  });
+  return html + '</div>';
+}
+
+function renderRecommendations(items) {
+  if (!items.length) return '';
+  var html = '<div class="analysis-section"><h3>Prioritized recommendations</h3><div class="recommendation-list">';
+  items.forEach(function(item) {
+    html += '<div class="recommendation-item"><div class="recommendation-priority">' + esc(String(item.priority || '-')) + '</div>' +
+      '<div><strong>' + esc(item.recommendation || '') + '</strong><div class="finding-evidence">' + esc(item.evidence || '') + '</div></div>' +
+      '<div><div class="recommendation-label">Expected impact</div>' + esc(item.expectedImpact || '-') + '</div>' +
+      '<div><div class="recommendation-label">Next step</div>' + esc(item.ownerNextStep || '-') + '</div></div>';
+  });
+  return html + '</div></div>';
+}
+
+// =================================================================
 // UTILITIES
 // =================================================================
+function fmtDate(value) {
+  if (!value) return '-';
+  var date = new Date(value);
+  if (isNaN(date.getTime())) return String(value);
+  return date.toLocaleString('en-MY', { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+function formatValue(value) {
+  if (value === null || value === undefined || value === '') return '-';
+  return String(value);
+}
+
+function priceAmount(price) {
+  return price && typeof price.amount === 'number' ? price.amount : null;
+}
+
+function fmtRMExact(value) {
+  if (value === null || value === undefined) return '-';
+  return 'RM ' + Number(value).toFixed(2);
+}
+
+function fmtPriceRange(range) {
+  if (!range || typeof range.low !== 'number' || typeof range.high !== 'number') return '-';
+  if (range.low === range.high) return fmtRMExact(range.low);
+  return fmtRMExact(range.low) + ' – ' + fmtRMExact(range.high);
+}
+
+function fmtSalesRange(range) {
+  if (!range || typeof range.low !== 'number' || typeof range.high !== 'number') return '-';
+  if (range.low === range.high) return Math.round(range.low).toLocaleString('en-MY');
+  return Math.round(range.low).toLocaleString('en-MY') + '–' + Math.round(range.high).toLocaleString('en-MY') +
+    (typeof range.point === 'number' ? ' (est. ' + Math.round(range.point).toLocaleString('en-MY') + ')' : '');
+}
+
+function methodLabel(method) {
+  if (method === 'direct_api') return 'Direct API';
+  if (method === 'bracket') return 'Bracket Method';
+  if (method === 'blocked') return 'Blocked';
+  return method || '-';
+}
+
 function fmtRM(v) {
   if (v === null || v === undefined) return '-';
   return 'RM ' + Math.round(v).toLocaleString('en-MY');
