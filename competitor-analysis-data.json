@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-07-16T03:23:06.753021+00:00",
+  "updatedAt": "2026-07-16T03:45:51.304933+00:00",
   "runs": [
     {
       "id": "422263284:53012087745@2026-07-16T11:23:06+08:00",
@@ -99,6 +99,125 @@
         "rejected": 84
       },
       "selectedCompetitors": [],
+      "variationMatrix": [
+        {
+          "ourVariation": "Gold Ingot White",
+          "ourPrice": {
+            "amount": 74.26,
+            "type": "current_listing",
+            "source": "item API data.models[].price",
+            "observedAt": "2026-07-16T10:58:35+08:00"
+          },
+          "competitorId": null,
+          "competitorUrl": null,
+          "competitorTitle": null,
+          "competitorShop": null,
+          "competitorVariation": null,
+          "competitorPrice": null,
+          "validatedMonthlySales": null,
+          "status": "no_direct_match",
+          "notes": "No visually verified buyer-equivalent option was found in the required search coverage."
+        },
+        {
+          "ourVariation": "Wealth Bucket Gold",
+          "ourPrice": {
+            "amount": 74.26,
+            "type": "current_listing",
+            "source": "item API data.models[].price",
+            "observedAt": "2026-07-16T10:58:35+08:00"
+          },
+          "competitorId": null,
+          "competitorUrl": null,
+          "competitorTitle": null,
+          "competitorShop": null,
+          "competitorVariation": null,
+          "competitorPrice": null,
+          "validatedMonthlySales": null,
+          "status": "no_direct_match",
+          "notes": "No visually verified buyer-equivalent option was found in the required search coverage."
+        },
+        {
+          "ourVariation": "Wealth Bucket White",
+          "ourPrice": {
+            "amount": 74.26,
+            "type": "current_listing",
+            "source": "item API data.models[].price",
+            "observedAt": "2026-07-16T10:58:35+08:00"
+          },
+          "competitorId": "24712845:29571081402",
+          "competitorUrl": "https://shopee.com.my/product/24712845/29571081402",
+          "competitorTitle": "【现货】7-10寸 陶瓷开运招财猫 电动摇手 电池款 【Ready Stock】 7-10inches Lucky Cat Fortune Cat Fengshui Cat Cashier",
+          "competitorShop": "Spaceshop123",
+          "competitorVariation": "7inch (A)",
+          "competitorPrice": {
+            "amount": 77.39,
+            "type": "current_listing",
+            "source": "item API data.models[].price for 7inch (A)",
+            "observedAt": "2026-07-16T11:22:12+08:00"
+          },
+          "validatedMonthlySales": {
+            "value": 187,
+            "method": "direct_api",
+            "observedAt": "2026-07-16T11:11:23+08:00"
+          },
+          "status": "near_match",
+          "notes": "Same ceramic electric mold and 19 × 14 × 17 cm size; competitor gift-box bundle was not proved."
+        },
+        {
+          "ourVariation": "Wealth Bucket Red",
+          "ourPrice": {
+            "amount": 74.26,
+            "type": "current_listing",
+            "source": "item API data.models[].price",
+            "observedAt": "2026-07-16T10:58:35+08:00"
+          },
+          "competitorId": null,
+          "competitorUrl": null,
+          "competitorTitle": null,
+          "competitorShop": null,
+          "competitorVariation": null,
+          "competitorPrice": null,
+          "validatedMonthlySales": null,
+          "status": "no_direct_match",
+          "notes": "No visually verified buyer-equivalent option was found in the required search coverage."
+        },
+        {
+          "ourVariation": "Treasure Bowl Red",
+          "ourPrice": {
+            "amount": 74.26,
+            "type": "current_listing",
+            "source": "item API data.models[].price",
+            "observedAt": "2026-07-16T10:58:35+08:00"
+          },
+          "competitorId": null,
+          "competitorUrl": null,
+          "competitorTitle": null,
+          "competitorShop": null,
+          "competitorVariation": null,
+          "competitorPrice": null,
+          "validatedMonthlySales": null,
+          "status": "no_direct_match",
+          "notes": "No visually verified buyer-equivalent option was found in the required search coverage."
+        },
+        {
+          "ourVariation": "Treasure Bowl White",
+          "ourPrice": {
+            "amount": 74.26,
+            "type": "current_listing",
+            "source": "item API data.models[].price",
+            "observedAt": "2026-07-16T10:58:35+08:00"
+          },
+          "competitorId": null,
+          "competitorUrl": null,
+          "competitorTitle": null,
+          "competitorShop": null,
+          "competitorVariation": null,
+          "competitorPrice": null,
+          "validatedMonthlySales": null,
+          "status": "no_direct_match",
+          "notes": "No visually verified buyer-equivalent option was found in the required search coverage."
+        }
+      ],
       "strengths": [
         {
           "finding": "ValueSnap clearly offers a six-style ceramic set with a red floral cloth mat and gift box.",

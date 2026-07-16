@@ -377,6 +377,40 @@ body {
 .variation-details { margin-top: 8px; }
 .variation-details summary { cursor: pointer; color: var(--blue); font-size: 12px; font-weight: 600; }
 .variation-details .compact-table { margin-top: 8px; }
+.variation-matrix-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 9px;
+}
+.variation-matrix table { min-width: 1120px; }
+.variation-name { font-weight: 700; color: var(--text); }
+.variation-competitor { max-width: 240px; }
+.variation-competitor a { display: block; }
+.variation-competitor small, .variation-note {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+.match-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .25px;
+  white-space: nowrap;
+}
+.match-pill.exact-match { color: var(--green); background: var(--green-light); border: 1px solid var(--green-border); }
+.match-pill.near-match { color: var(--amber); background: var(--amber-light); border: 1px solid #fde68a; }
+.match-pill.no-direct-match { color: var(--text-muted); background: #f3f4f6; border: 1px solid var(--border); }
+.price-position { font-weight: 700; }
+.price-position.ours-cheaper { color: var(--green); }
+.price-position.competitor-cheaper { color: var(--red); }
+.price-position.same-price { color: var(--text-muted); }
 .notice-box { padding: 12px 14px; border-radius: 8px; font-size: 13px; }
 .notice-box.no-match { background: var(--blue-light); border: 1px solid var(--blue-border); color: #1d4ed8; }
 .notice-box.blocker { background: var(--red-light); border: 1px solid var(--red-border); color: var(--red); }
@@ -889,6 +923,8 @@ function renderAnalysisRun(run) {
     '<span class="meta-chip">' + esc(String(coverage.rejected || 0)) + ' rejected</span>' +
     '<span class="meta-chip evidence-chip">&#10003; Evidence verified</span></div></div>';
 
+  html += renderRunVariationMatrix(run.variationMatrix || [], product.variations || []);
+
   if (run.selectedCompetitors && run.selectedCompetitors.length) {
     var competitorHeading = status === 'complete' ? 'Ranked exact-match competitors' : 'Validated candidates — partial pool';
     html += '<div class="analysis-section"><h3>' + competitorHeading + '</h3><div class="compact-table">' +
@@ -911,6 +947,79 @@ function renderAnalysisRun(run) {
   }
   html += '</div></article>';
   return html;
+}
+
+function renderRunVariationMatrix(rows, ownVariations) {
+  if (!rows.length) {
+    rows = (ownVariations || []).map(function(variation) {
+      return {
+        ourVariation: variation.name,
+        ourPrice: variation.currentPrice,
+        competitorId: null,
+        competitorUrl: null,
+        competitorTitle: null,
+        competitorShop: null,
+        competitorVariation: null,
+        competitorPrice: null,
+        validatedMonthlySales: null,
+        status: 'no_direct_match',
+        notes: 'No stored competitor equivalent for this variation.'
+      };
+    });
+  }
+  if (!rows.length) return '';
+
+  var nearMatches = rows.filter(function(row) { return row.status === 'near_match'; }).length;
+  var exactMatches = rows.filter(function(row) { return row.status === 'exact_match'; }).length;
+  var noMatches = rows.filter(function(row) { return row.status === 'no_direct_match'; }).length;
+  var html = '<div class="analysis-section"><h3>Variation price matrix</h3>' +
+    '<div class="variation-matrix-summary"><span class="meta-chip">' + esc(String(rows.length)) + ' own variations</span>' +
+    '<span class="meta-chip">' + esc(String(exactMatches)) + ' exact comparisons</span>' +
+    '<span class="meta-chip">' + esc(String(nearMatches)) + ' near-match benchmarks</span>' +
+    '<span class="meta-chip">' + esc(String(noMatches)) + ' no direct match</span></div>' +
+    '<div class="compact-table variation-matrix"><table class="data-table"><thead><tr>' +
+    '<th>Our variation</th><th class="right">Our current</th><th>Closest verified listing</th>' +
+    '<th>Competitor variation</th><th class="right">Comp current</th><th class="right">Gap (Comp − Us)</th>' +
+    '<th>Price position</th><th class="right">Validated monthly</th><th>Verdict</th></tr></thead><tbody>';
+
+  rows.forEach(function(row) {
+    var ourAmount = priceAmount(row.ourPrice);
+    var competitorAmount = priceAmount(row.competitorPrice);
+    var difference = ourAmount !== null && competitorAmount !== null ? competitorAmount - ourAmount : null;
+    var pricePosition = variationPricePosition(difference);
+    var statusClass = ['exact_match', 'near_match', 'no_direct_match'].indexOf(row.status) >= 0 ? row.status.replace(/_/g, '-') : 'no-direct-match';
+    var listing = '-';
+    if (row.competitorUrl && row.competitorTitle) {
+      listing = '<div class="variation-competitor"><a class="product-link" href="' + esc(row.competitorUrl) + '" target="_blank" rel="noopener">' +
+        esc(truncate(row.competitorTitle, 38)) + '</a><small>' + esc(row.competitorShop || '-') + '</small></div>';
+    }
+    var sales = row.validatedMonthlySales && typeof row.validatedMonthlySales.value === 'number'
+      ? Math.round(row.validatedMonthlySales.value).toLocaleString('en-MY')
+      : '-';
+    html += '<tr><td class="variation-name">' + esc(row.ourVariation || '-') + '</td>' +
+      '<td class="right">' + esc(fmtRMExact(ourAmount)) + '</td><td>' + listing + '</td>' +
+      '<td>' + esc(row.competitorVariation || 'No direct match') + '</td>' +
+      '<td class="right">' + esc(fmtRMExact(competitorAmount)) + '</td>' +
+      '<td class="right">' + esc(difference === null ? '-' : (difference >= 0 ? '+' : '') + 'RM ' + difference.toFixed(2)) + '</td>' +
+      '<td><span class="price-position ' + pricePosition.cssClass + '">' + esc(pricePosition.label) + '</span></td>' +
+      '<td class="right sales-range">' + esc(sales) + '</td>' +
+      '<td><span class="match-pill ' + statusClass + '">' + esc(variationStatusLabel(row.status)) + '</span>' +
+      '<span class="variation-note">' + esc(row.notes || '-') + '</span></td></tr>';
+  });
+  return html + '</tbody></table></div></div>';
+}
+
+function variationPricePosition(difference) {
+  if (difference === null) return { label: 'No verified equivalent', cssClass: 'same-price' };
+  if (difference > 0.004) return { label: 'Ours cheaper', cssClass: 'ours-cheaper' };
+  if (difference < -0.004) return { label: 'Competitor cheaper', cssClass: 'competitor-cheaper' };
+  return { label: 'Same price', cssClass: 'same-price' };
+}
+
+function variationStatusLabel(status) {
+  if (status === 'exact_match') return 'Exact match';
+  if (status === 'near_match') return 'Near match';
+  return 'No direct match';
 }
 
 function renderCompetitorRow(competitor) {
