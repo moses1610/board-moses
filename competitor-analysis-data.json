@@ -1,5 +1,168 @@
 {
   "schemaVersion": 1,
-  "updatedAt": null,
-  "runs": []
+  "updatedAt": "2026-07-16T03:23:06.753021+00:00",
+  "runs": [
+    {
+      "id": "422263284:53012087745@2026-07-16T11:23:06+08:00",
+      "recordedAt": "2026-07-16T11:23:06+08:00",
+      "status": "complete",
+      "summary": "No exact-match competitor survived the full Malay/English API and visible-browser audit; the closest local same-mold listing lacked proof of the ValueSnap gift-box bundle.",
+      "ourProduct": {
+        "url": "https://shopee.com.my/product/422263284/53012087745",
+        "shopId": "422263284",
+        "itemId": "53012087745",
+        "title": "Electric Waving Hand Lucky Cat Kucing Bertuah Melambai Tangan Gold Ceramic Fortune Cat Figurine Patung Kucing Rezeki 招財貓",
+        "delistingStatus": "active",
+        "variationCount": 6,
+        "priceRange": {
+          "low": 74.26,
+          "high": 74.26
+        },
+        "variations": [
+          {
+            "name": "Gold Ingot White",
+            "currentPrice": {
+              "amount": 74.26,
+              "type": "current_listing",
+              "source": "item API data.models[].price",
+              "observedAt": "2026-07-16T10:58:35+08:00"
+            },
+            "buyerAfterVoucherPrice": null
+          },
+          {
+            "name": "Wealth Bucket Gold",
+            "currentPrice": {
+              "amount": 74.26,
+              "type": "current_listing",
+              "source": "item API data.models[].price",
+              "observedAt": "2026-07-16T10:58:35+08:00"
+            },
+            "buyerAfterVoucherPrice": null
+          },
+          {
+            "name": "Wealth Bucket White",
+            "currentPrice": {
+              "amount": 74.26,
+              "type": "current_listing",
+              "source": "item API data.models[].price",
+              "observedAt": "2026-07-16T10:58:35+08:00"
+            },
+            "buyerAfterVoucherPrice": null
+          },
+          {
+            "name": "Wealth Bucket Red",
+            "currentPrice": {
+              "amount": 74.26,
+              "type": "current_listing",
+              "source": "item API data.models[].price",
+              "observedAt": "2026-07-16T10:58:35+08:00"
+            },
+            "buyerAfterVoucherPrice": null
+          },
+          {
+            "name": "Treasure Bowl Red",
+            "currentPrice": {
+              "amount": 74.26,
+              "type": "current_listing",
+              "source": "item API data.models[].price",
+              "observedAt": "2026-07-16T10:58:35+08:00"
+            },
+            "buyerAfterVoucherPrice": null
+          },
+          {
+            "name": "Treasure Bowl White",
+            "currentPrice": {
+              "amount": 74.26,
+              "type": "current_listing",
+              "source": "item API data.models[].price",
+              "observedAt": "2026-07-16T10:58:35+08:00"
+            },
+            "buyerAfterVoucherPrice": null
+          }
+        ]
+      },
+      "keywords": [
+        {
+          "language": "ms",
+          "keyword": "kucing rezeki elektrik"
+        },
+        {
+          "language": "en",
+          "keyword": "electric lucky cat"
+        }
+      ],
+      "coverage": {
+        "passes": 4,
+        "resultsReviewed": 480,
+        "candidatesReviewed": 84,
+        "accepted": 0,
+        "rejected": 84
+      },
+      "selectedCompetitors": [],
+      "strengths": [
+        {
+          "finding": "ValueSnap clearly offers a six-style ceramic set with a red floral cloth mat and gift box.",
+          "evidence": "Live product description, package list, and variation images verified during this run."
+        },
+        {
+          "finding": "ValueSnap is RM3.13 below the closest rejected same-mold 7-inch option on current listed price.",
+          "evidence": "ValueSnap Wealth Bucket White is RM74.26; the rejected near-match 7inch A is RM77.39. It was not accepted because its gift-box bundle was not proved."
+        }
+      ],
+      "gaps": [
+        {
+          "finding": "The ValueSnap size copy is internally inconsistent.",
+          "evidence": "Description says a 7-inch option and also cites 23 × 15 × 20 cm, while live variation artwork shows 18–19 cm width and 16–18 cm height."
+        },
+        {
+          "finding": "No true exact competitor remained after bundle, eligibility, material, mechanism, and visual checks.",
+          "evidence": "84 plausible lucky-cat listings were reviewed; overseas, Mall, pre-order, plastic, solar, different-design, or unproved-bundle listings were rejected."
+        }
+      ],
+      "recommendations": [
+        {
+          "priority": 1,
+          "recommendation": "Correct the size wording so the description and all six variation dimensions agree.",
+          "evidence": "Live copy currently mixes 7-inch, 23 × 15 × 20 cm, and variation heights of 16–18 cm.",
+          "expectedImpact": "Reduce buyer uncertainty and make future like-for-like comparisons cleaner.",
+          "ownerNextStep": "Listing owner to verify physical dimensions and draft corrected copy for approval."
+        },
+        {
+          "priority": 2,
+          "recommendation": "Keep the gift-box-plus-cloth-mat bundle prominent in the title and first description block.",
+          "evidence": "The bundle was the decisive difference that excluded the closest same-mold listing.",
+          "expectedImpact": "Make the buyer-value advantage easier to understand.",
+          "ownerNextStep": "Content owner to prepare a title and first-bullet proposal; no live edit in this workflow."
+        },
+        {
+          "priority": 3,
+          "recommendation": "Add one variation matrix image with exact style names, dimensions, and package contents.",
+          "evidence": "Six style names are present, but current dimension evidence is spread across different listing sections.",
+          "expectedImpact": "Improve option clarity and reduce selection mistakes.",
+          "ownerNextStep": "Creative owner to prepare a verified matrix using measured dimensions."
+        },
+        {
+          "priority": 4,
+          "recommendation": "Track rejected near-match 24712845:29571081402 separately as a market benchmark, not as an exact competitor.",
+          "evidence": "Its 7inch A shares the same mold and recorded 187 API monthly sold, but the gift-box bundle was not proved.",
+          "expectedImpact": "Preserve useful market monitoring without weakening the exact-match standard.",
+          "ownerNextStep": "Repeat a read-only check in the next competitor cycle."
+        },
+        {
+          "priority": 5,
+          "recommendation": "Repeat the full bilingual search before the main Chinese New Year demand window.",
+          "evidence": "The current complete search found no exact buyer-equivalent set.",
+          "expectedImpact": "Detect new exact listings or bundle changes when category activity rises.",
+          "ownerNextStep": "Schedule a fresh read-only analysis closer to the seasonal window."
+        }
+      ],
+      "noExactMatchFinding": "No exact match found after both Malay and English keywords were checked through three API pages and three visible browser pages each. The closest same-mold local listing did not prove the gift-box bundle, so near-matches were not padded into the result.",
+      "blockers": [],
+      "evidence": {
+        "verified": true,
+        "freshnessCheckedAt": "2026-07-16T11:23:06+08:00",
+        "validationMode": "complete"
+      }
+    }
+  ]
 }
